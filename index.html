@@ -15,12 +15,21 @@
   </h1>
   <div class="grid grid-cols-2 divide-x-1 divide-dashed">
     <div class="bg-red-50 p-5 relative">
+      <div class="bg-red-50 sticky top-0 pb-2.5">
+        <input
+          id="search"
+          type="text"
+          placeholder="Search..."
+          class="w-full border border-dashed text-sm placeholder:px-2 placeholder:text-xs"
+          autocomplete="off"
+        />
+      </div>
       <div id="list" class="h-96 overflow-auto">
       </div>
     </div>
     <div id="info" class="bg-green-50 p-5 sticky top-0"></div>
+    </div>
   </div>
-</div>
-<script type="module" src="/src/main.ts"></script>
-</body>
+  <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

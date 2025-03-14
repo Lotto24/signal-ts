@@ -1,36 +1,37 @@
 let effectCallback: (() => void) | null = null
 
 export class Signal<T> {
-    private value: T
-    private subscribers: ((value: T) => void)[] = []
+    private value: T;
+    private subscribers: (() => void)[] = []
 
-    constructor(value: T) {
-        this.value = value
-        this.subscribers = []
+    constructor(initialValue: T) {
+        this.value = initialValue
     }
 
-    subscribe(subscriber: (value: T) => void) {
-        this.subscribers.push(subscriber)
-    }
-
-    set(value: T) {
-        if (this.value === value) {
+    set(newValue: T) {
+        // TODO: deep compare, currently only works for primitive types
+        if (this.value === newValue) {
             return
         }
-        this.value = value
-        this.subscribers.forEach(subscriber => subscriber(this.value))
+        this.value = newValue
+        this.subscribers.forEach(subscriber => subscriber())
     }
 
     get() {
-        if (effectCallback) {
+        if(effectCallback) {
             this.subscribe(effectCallback)
         }
         return this.value
     }
+
+    private subscribe(subscriber: () => void) {
+        this.subscribers.push(subscriber)
+    }
 }
 
-export const createEffect = (effect: () => void) => {
-    effectCallback = effect
-    effect()
+
+export function createEffect(callback: () => void) {
+    effectCallback = callback
+    callback()
     effectCallback = null
 }
